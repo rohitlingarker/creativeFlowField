@@ -1,25 +1,39 @@
 let canvas;
 let ctx;
+let ef;
 window.onload = function(){
     canvas = document.getElementById('canvas1');
     context = canvas.getContext('2d');
     console.log(context);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const ef =new Effect(canvas.width,canvas.height,context);
+    ef =new Effect(canvas.width,canvas.height,context);
     ef.init();
     ef.animate();
 
+}
+
+let mouse = {
+    x: 0,
+    y: 0
 }
 
 window.addEventListener('resize',function(){
     location.reload();
 })
 
+window.addEventListener('mousemove',function(e){
+    mouse.x = e.x;
+    mouse.y = e.y;
+    ef.blast()
+})
+
 class Particle{
     constructor(x, y , color , effect) {
         this.initialX = x;
         this.initialY = y;
+        // this.x = x;
+        // this.y = y;
         this.x = Math.random() * effect.width;
         this.y = Math.random() * effect.height;
         this.vx = 0;
@@ -53,6 +67,7 @@ class Effect{
         this.pstep = 5;
         this.centerX = this.width/2;
         this.centerY = this.height/2;
+        this.blastRadius = 3600;
     }
 
     getImageData(){
@@ -109,6 +124,18 @@ class Effect{
         this.particles.forEach(particle=>{
             particle.x = Math.random() * this.width;
             particle.y = Math.random() * this.height;
+        })
+    }
+
+    blast(){
+        this.particles.forEach(particle=>{
+            const dx =  particle.x - mouse.x ;
+            const dy = particle.y - mouse.y ;
+            const distance = dx * dx + dy * dy;
+            if(distance < 3600){
+                particle.x = mouse.x + this.blastRadius * dx / distance;
+                particle.y = mouse.y + this.blastRadius * dy / distance;
+            }
         })
     }
 
