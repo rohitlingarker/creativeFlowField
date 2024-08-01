@@ -22,7 +22,7 @@ window.addEventListener('resize',function(){
     location.reload();
 })
 
-window.addEventListener('mouseup',function(e){
+window.addEventListener('mousemove',function(e){
     mouse.x = e.x;
     mouse.y = e.y;
     ef.blast()
@@ -67,7 +67,7 @@ class Effect{
         this.pstep = 10;
         this.centerX = this.width/2;
         this.centerY = this.height/2;
-        this.blastRadius = 1000;
+        this.blastRadius = 3600;
     }
 
     getImageData(){
